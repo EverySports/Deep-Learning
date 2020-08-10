@@ -241,5 +241,7 @@ dmypy.json
 # Deep Learning
 logs/
 checkpoints/
+images/
+output/
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm+all,jupyternotebooks,python
