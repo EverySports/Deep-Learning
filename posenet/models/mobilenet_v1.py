@@ -16,9 +16,9 @@ class MobileNetV1(tf.keras.Model):
             classifier_activation=None,
         )
         self.features.trainable = False
-        self.conv = Conv2D(1024, 3, padding='same')
-        self.dconv1 = Conv2DTranspose(1024, 3, strides=2, padding='same')
-        self.dconv2 = Conv2DTranspose(1024, 3, strides=2, padding='same')
+        self.conv = Conv2D(1024, 1, padding='same')
+        self.dconv = Conv2DTranspose(1024, 3, strides=2, padding='same')
+
         self.heatmap = Conv2D(17, 1, 1, activation='sigmoid', padding='same')
         self.offset = Conv2D(34, 1, 1 , padding='same')
         self.displacement_fwd = Conv2D(32, 1, 1, padding='same')
@@ -27,8 +27,7 @@ class MobileNetV1(tf.keras.Model):
     def call(self, x):
         x = self.features(x)
         x = self.conv(x)
-        x = self.dconv1(x)
-        x = self.dconv1(x)
+        x = self.dconv(x)
 
         heatmap = self.heatmap(x)
         offset = self.offset(x)
