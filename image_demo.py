@@ -68,7 +68,7 @@ def main():
         heatmaps_result, offsets_result, displacement_fwd_result, displacement_bwd_result = model(input_image)
 
         ###
-        # showInfo(heatmaps_result, offsets_result, displacement_fwd_result, displacement_bwd_result)
+        showInfo(heatmaps_result, offsets_result, displacement_fwd_result, displacement_bwd_result)
         ###
 
         pose_scores, keypoint_scores, keypoint_coords = posenet.decode_multiple_poses(
