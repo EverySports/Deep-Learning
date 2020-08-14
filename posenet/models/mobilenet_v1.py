@@ -15,11 +15,11 @@ class MobileNetV1(tf.keras.Model):
             weights='imagenet',
             classifier_activation=None,
         )
-        self.features.trainable = False
+        # self.features.trainable = False
         self.conv = Conv2D(1024, 1, padding='same')
         self.dconv1 = Conv2DTranspose(1024, 3, strides=2, padding='same')
         self.dconv2 = Conv2DTranspose(1024, 3, strides=2, padding='same')
-        
+
         self.heatmap = Conv2D(17, 1, 1, activation='sigmoid', padding='same')
         self.offset = Conv2D(34, 1, 1 , padding='same')
         # self.displacement_fwd = Conv2D(32, 1, 1, padding='same')
