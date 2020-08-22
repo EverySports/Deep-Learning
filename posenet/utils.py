@@ -83,10 +83,10 @@ def draw_skel_and_kp(
     out_img = img
     adjacent_keypoints = []
     cv_keypoints = []
+    
     for ii, score in enumerate(instance_scores):
         if score < min_pose_score:
             continue
-
         new_keypoints = get_adjacent_keypoints(
             keypoint_scores[ii, :], keypoint_coords[ii, :, :], min_part_score)
         adjacent_keypoints.extend(new_keypoints)
