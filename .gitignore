@@ -244,4 +244,11 @@ checkpoints/
 images/
 output/
 
+# Crawling
+/TM/lunge
+/TM/squat
+/TM/chromedriver
+/TM/.DS_Store
+
+.DS_Store
 # End of https://www.toptal.com/developers/gitignore/api/pycharm+all,jupyternotebooks,python
