@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-from tensorflow.keras.applications import MobileNet
+from tensorflow.keras.applications import MobileNet, MobileNetV2
 from tensorflow.keras.layers import *
 from tensorflow.python.keras import backend
 
@@ -103,9 +103,9 @@ class MobileNetV1(tf.keras.Model):
         heatmap = self.heatmap(heatmap)
 
         offset = self.offset_conv1(x)
-        # offset = tf.nn.swish(offset)
+        # offset = tf.nn.relu(offset)
         offset = self.offset_conv2(offset)
-        # offset = tf.nn.swish(offset)
+        # offset = tf.nn.relu(offset)
         offset = self.offset(offset)
         # displacement_fwd = self.displacement_fwd(x)
         # displacement_bwd = self.displacement_bwd(x)
