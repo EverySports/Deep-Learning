@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-from tensorflow.keras.applications import MobileNet, MobileNetV2, EfficientNetB4
+from tensorflow.keras.applications import MobileNet, MobileNetV2, EfficientNetB4, EfficientNetB2
 from tensorflow.keras.layers import *
 from tensorflow.python.keras import backend
 
@@ -87,7 +87,7 @@ class MobileNetV1(tf.keras.Model):
 
         super(MobileNetV1, self).__init__()
         self.output_stride = output_stride
-        self.features = MobileNet(
+        self.features = EfficientNetB2(
             input_shape=input_shape,
             include_top=False,
             weights='imagenet',
