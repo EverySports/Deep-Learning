@@ -33,6 +33,11 @@ def focal_loss(y_true, y_pred):
     # or reduce_sum and/or axis=-1
     return tf.reduce_mean(loss)
 
+def EMD_loss(y_true, y_pred):
+    cdf_ytrue = K.cumsum(y_true, axis=-1)
+    cdf_ypred = K.cumsum(y_pred, axis=-1)
+    samplewise_emd = K.sqrt(K.mean(K.square(K.abs(cdf_ytrue - cdf_ypred)), axis=-1))
+    return K.mean(samplewise_emd)
 
 def criterion(y_true, y_pred):  # Regression Loss
 
