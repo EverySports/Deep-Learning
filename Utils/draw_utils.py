@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 
-def draw_heatmap(batch, heatmap_result, offset_result, displacement_fwd_result=None, displacement_bwd_result=None):
+def draw_heatmap(batch, heatmap_result, offset_result=None, displacement_fwd_result=None, displacement_bwd_result=None):
     plt.figure(figsize=(10, 30))
 
     ### Heatmap
@@ -13,15 +13,15 @@ def draw_heatmap(batch, heatmap_result, offset_result, displacement_fwd_result=N
         plt.title(idx)
 
     ### Offset
-    for idx in range(17):
-        plt.subplot(12, 5, idx + 1 + 20)
-        plt.imshow(offset_result[batch][:, :, idx])
-        plt.colorbar()
-        plt.title(idx)
-        plt.subplot(12, 5, idx + 18 + 20)
-        plt.imshow(offset_result[batch][:, :, 17 + idx])
-        plt.colorbar()
-        plt.title(17 + idx)
+    # for idx in range(17):
+    #     plt.subplot(12, 5, idx + 1 + 20)
+    #     plt.imshow(offset_result[batch][:, :, idx])
+    #     plt.colorbar()
+    #     plt.title(idx)
+    #     plt.subplot(12, 5, idx + 18 + 20)
+    #     plt.imshow(offset_result[batch][:, :, 17 + idx])
+    #     plt.colorbar()
+    #     plt.title(17 + idx)
         # plt.show()
 
 
@@ -107,7 +107,7 @@ def draw_result(img, idx, keypoint_coords, keypoint_coords_nooff, result, inf_ge
     plt.show()
 
 def draw_train_result(history):
-    fig, loss_ax = plt.subplots(3, 1, figsize=(7, 21))
+    fig, loss_ax = plt.subplots(1, 1, figsize=(7, 21))
 
     loss_ax[0].plot(history.history['loss'], 'y', label='train loss')
     loss_ax[0].plot(history.history['val_loss'], 'r', label='val loss')
@@ -120,26 +120,26 @@ def draw_train_result(history):
 
     loss_ax[0].legend(loc='lower left')
 
-    loss_ax[1].plot(history.history['mobile_net_v1_loss'], 'y', label='train loss')
-    loss_ax[1].plot(history.history['val_mobile_net_v1_loss'], 'r', label='val loss')
+    # loss_ax[1].plot(history.history['mobile_net_v1_loss'], 'y', label='train loss')
+    # loss_ax[1].plot(history.history['val_mobile_net_v1_loss'], 'r', label='val loss')
+    #
+    # best = min(history.history['val_mobile_net_v1_loss'])
+    # loss_ax[1].set_title(f'Best Loss : {best}')
+    #
+    # loss_ax[1].set_xlabel('epoch')
+    # loss_ax[1].set_ylabel('loss')
+    #
+    # loss_ax[1].legend(loc='lower left')
 
-    best = min(history.history['val_mobile_net_v1_loss'])
-    loss_ax[1].set_title(f'Best Loss : {best}')
-
-    loss_ax[1].set_xlabel('epoch')
-    loss_ax[1].set_ylabel('loss')
-
-    loss_ax[1].legend(loc='lower left')
-
-    loss_ax[2].plot(history.history['mobile_net_v1_1_loss'], 'y', label='train loss')
-    loss_ax[2].plot(history.history['val_mobile_net_v1_1_loss'], 'r', label='val loss')
-
-    best = min(history.history['val_mobile_net_v1_1_loss'])
-    loss_ax[2].set_title(f'Best Loss : {best}')
-
-    loss_ax[2].set_xlabel('epoch')
-    loss_ax[2].set_ylabel('loss')
-
-    loss_ax[2].legend(loc='lower left')
+    # loss_ax[2].plot(history.history['mobile_net_v1_1_loss'], 'y', label='train loss')
+    # loss_ax[2].plot(history.history['val_mobile_net_v1_1_loss'], 'r', label='val loss')
+    #
+    # best = min(history.history['val_mobile_net_v1_1_loss'])
+    # loss_ax[2].set_title(f'Best Loss : {best}')
+    #
+    # loss_ax[2].set_xlabel('epoch')
+    # loss_ax[2].set_ylabel('loss')
+    #
+    # loss_ax[2].legend(loc='lower left')
 
     plt.show()
