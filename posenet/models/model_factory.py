@@ -1,7 +1,8 @@
 import os
 import tensorflow as tf
 
-from posenet.models.mobilenet_v1 import MobileNetV1
+# from posenet.models.mobilenet_v1 import MobileNetV1
+from posenet.models.efficientPose import MobileNetV1
 
 MODEL_DIR = './_models'
 DEBUG_OUTPUT = False

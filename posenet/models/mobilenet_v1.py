@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-from tensorflow.keras.applications import MobileNet, MobileNetV2
+from tensorflow.keras.applications import MobileNet, MobileNetV2, EfficientNetB4
 from tensorflow.keras.layers import *
 from tensorflow.python.keras import backend
 
