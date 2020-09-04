@@ -40,7 +40,7 @@ def get_instance_score_fast(
     return not_overlapped_scores / len(keypoint_scores)
 
 
-def decode_single_poses(scores, offsets, NUM_KEYPOINTS=17, nms_radius=20,
+def decode_single_poses(scores, offsets=None, NUM_KEYPOINTS=17, nms_radius=20,
                         score_threshold=0.5, LOCAL_MAXIMUM_RADIUS=1, output_stride=256 / 32):
     pose_scores = np.zeros(1)
     pose_keypoint_scores = np.zeros((1, NUM_KEYPOINTS))
@@ -75,7 +75,7 @@ def decode_single_poses(scores, offsets, NUM_KEYPOINTS=17, nms_radius=20,
     return [pose_scores], pose_keypoint_scores, pose_keypoint_coords
 
 
-def decode_single_poses_nooff(scores, offsets, NUM_KEYPOINTS=17, nms_radius=20,
+def decode_single_poses_nooff(scores, offsets=None, NUM_KEYPOINTS=17, nms_radius=20,
                               score_threshold=0.5, LOCAL_MAXIMUM_RADIUS=1, output_stride=256 / 32):
     pose_scores = np.zeros(1)
     pose_keypoint_scores = np.zeros((1, NUM_KEYPOINTS))
