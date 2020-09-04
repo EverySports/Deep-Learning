@@ -50,7 +50,7 @@ class EvalDataGenerator(tf.keras.utils.Sequence):
         for i, ID in enumerate(list_IDs_batch):
             img_path = self.image_paths[ID]
             img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB).astype(np.float32)
-            img /= 255.
+            # img /= 255.
             img_hs.append(img.shape[0])
             img_ws.append(img.shape[1])
 
@@ -139,7 +139,7 @@ class DataGenerator(tf.keras.utils.Sequence):
         for i, ID in enumerate(list_IDs_batch):
             img_path = self.image_paths[ID]
             img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB).astype(np.float32)
-            img /= 255.
+            # img /= 255.
             img_hs.append(img.shape[0])
             img_ws.append(img.shape[1])
 
