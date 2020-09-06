@@ -33,10 +33,10 @@ def focal_loss(y_true, y_pred):
     # or reduce_sum and/or axis=-1
     return tf.reduce_mean(loss)
 
-def EMD_loss(y_true, y_pred):
-    cdf_ytrue = K.cast(K.cumsum(y_true, axis=-1), dtype=tf.float32)
-    cdf_ypred = K.cumsum(y_pred, axis=-1)
-    samplewise_emd = K.sqrt(K.mean(K.square(K.abs(cdf_ytrue - cdf_ypred)), axis=-1))
+def EMD_loss(y_true, y_pred, axis):
+    cdf_ytrue = K.cast(K.cumsum(y_true, axis=axis), dtype=tf.float32)
+    cdf_ypred = K.cumsum(y_pred, axis=axis)
+    samplewise_emd = K.sqrt(K.mean(K.square(K.abs(cdf_ytrue - cdf_ypred)), axis=axis))
     return K.mean(samplewise_emd)
 
 def criterion(y_true, y_pred):  # Regression Loss
@@ -52,4 +52,10 @@ def criterion2(y_true, y_pred):  # Heatmap Loss
 
     loss = focal_loss(y_true, y_pred)
 
+    return loss
+
+def criterion3(y_true, y_pred):
+    
+    loss = EMD_loss(y_true, y_pred, -1) + EMD_loss(y_true, y_pred, -2) + EMD_loss(y_true, y_pred, -3)
+    
     return loss
