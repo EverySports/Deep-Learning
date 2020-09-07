@@ -56,6 +56,6 @@ def criterion2(y_true, y_pred):  # Heatmap Loss
 
 def criterion3(y_true, y_pred):
     
-    loss = EMD_loss(y_true, y_pred, -1) + EMD_loss(y_true, y_pred, -2) + EMD_loss(y_true, y_pred, -3)
+    loss = EMD_loss(y_true, y_pred, -1)/1000 + focal_loss(y_true, y_pred)
     
     return loss
