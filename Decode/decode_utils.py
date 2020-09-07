@@ -18,6 +18,7 @@ def build_part_with_score(score_threshold, local_max_radius, scores):
         max_vals = ndi.maximum_filter(kp_scores, size=lmd, mode='constant')
         max_loc = np.logical_and(kp_scores == max_vals, kp_scores > 0)
         max_loc_idx = max_loc.nonzero()
+
         for y, x in zip(*max_loc_idx):
             parts.append((
                 scores[y, x, keypoint_id],

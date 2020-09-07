@@ -9,17 +9,22 @@ def _nms(heat, kernel=3):
     return heat * keep
 
 
-def decode_ddd(hm, offset, k, output_stride):
+def decode_ddd(hm, k, output_stride):
     hm = _nms(hm)
     hm_shape = K.shape(hm)
-    offset_shape = K.shape(offset)
+    # if offset:
+    #     offset_shape = K.shape(offset)
+    #     offset_flat = K.reshape(offset, (offset_shape[0], -1, offset_shape[-1]))
+    # else:
+    #     offset_flat = None
+
     batch, width, cat = hm_shape[0], hm_shape[2], hm_shape[3]
 
     hm_flat = K.reshape(hm, (batch, -1))
-    offset_flat = K.reshape(offset, (offset_shape[0], -1, offset_shape[-1]))
 
     def _process_sample(args):
-        _hm, _offset = args
+        _hm = args
+        # _hm, _offset = args
         _scores, _inds = tf.math.top_k(_hm, k=k, sorted=True)
         _classes = K.cast(_inds % cat, 'float32')
         _inds = K.cast(_inds / cat, 'int32')
@@ -27,21 +32,26 @@ def decode_ddd(hm, offset, k, output_stride):
         _ys = K.cast(K.cast(_inds / width, 'int32'), 'float32')
         _xs *= output_stride
         _ys *= output_stride
-        _xs += 4
-        _ys += 4
+        # _xs += 4
+        # _ys += 4
 
         _detection = K.stack([_xs, _ys, _scores, _classes], -1)
         return _detection
 
-    detections = K.map_fn(_process_sample, [hm_flat, offset_flat], dtype=K.floatx())
+    detections = K.map_fn(_process_sample, [hm_flat], dtype=K.floatx())
+    # detections = K.map_fn(_process_sample, [hm_flat, offset_flat], dtype=K.floatx())
     return detections
 
 
 def add_decoder(model, k=17, output_stride=256 / 32):
     def _decode(args):
-        hm, offset = args
-        return decode_ddd(hm, offset, k=k, output_stride=output_stride)
+        hm = args
+        return decode_ddd(hm, k=k, output_stride=output_stride)
+        # return decode_ddd(hm, offset, k=k, output_stride=output_stride)
 
-    output = Lambda(_decode)([*model.outputs])
+    if len(model.outputs) > 1:
+        output = Lambda(_decode)([*model.outputs])
+    else:
+        output = Lambda(_decode)(*model.outputs)
     model = tf.keras.Model(model.input, output)
     return model
