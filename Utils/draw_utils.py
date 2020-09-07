@@ -35,7 +35,7 @@ def get_adjacent(keypoint_coords):
     for start, end in list_dic:
         start_node = keypoint_coords[start]
         end_node = keypoint_coords[end]
-        if sum(start_node) == 0 or sum(end_node) == 0: continue
+        if sum(start_node) <= 0 or sum(end_node) <= 0: continue
         adjacent_list.append(start_node)
         adjacent_list.append(end_node)
     adjacent_list = np.array(adjacent_list, dtype=np.int32)
@@ -55,19 +55,35 @@ def get_keypoints(keypoint_coords):
 
 def draw_keypoint(keypoints, img):
     for pt in keypoints:
+        if sum(pt) <= 0: continue
         img = cv2.circle(img, tuple(pt), radius=5, color=(255, 255, 0), thickness=-1)
+    return img
+
+def draw_skeleton(keypoint_coords, img):
+    list_dic = [(0, 1), (1, 2), (2, 3),
+                (0, 4), (4, 5), (5, 6),
+                (0, 7), (7, 8), (8, 9), (9, 10),
+                (8, 11), (11, 12), (12, 13),
+                (8, 14), (14, 15), (15, 16)]
+    for adj in list_dic:
+        pt1 = keypoint_coords[adj[0]]
+        pt2 = keypoint_coords[adj[1]]
+        if sum(pt1) <= 0 or sum(pt2) <= 0: continue
+        img = cv2.line(img, (int(pt1[1]), int(pt1[0])),
+                       (int(pt2[1]), int(pt2[0])), color=(255,0,0), thickness=3)
     return img
 
 
 def draw_skeleton_and_kepoints(keypoint_coords, img):
     adjacent_list = get_adjacent(keypoint_coords)
     draw_image = cv2.polylines(img, [adjacent_list], isClosed=False, color=(255,0,0), thickness=3)
+    # draw_image = draw_skeleton(keypoint_coords, img)
     cv_keypoints = get_keypoints(keypoint_coords)
     draw_image = draw_keypoint(cv_keypoints, draw_image)
     return draw_image
 
 
-def draw_result(img, idx, keypoint_coords, keypoint_coords_nooff, result, inf_gen):
+def draw_result(img, idx, keypoint_coords, keypoint_coords_nooff, result, inf_gen, seed):
     plt.figure(figsize=(10, 14))
 
     plt.subplot(321)
@@ -80,7 +96,8 @@ def draw_result(img, idx, keypoint_coords, keypoint_coords_nooff, result, inf_ge
     plt.scatter(keypoint_coords_nooff[:, 1], keypoint_coords_nooff[:, 0], c='blue')
     plt.title('No offset')
 
-    hm = np.sum(result[0].numpy().squeeze(axis=0), axis=2)
+    # hm = np.sum(result[0].numpy().squeeze(axis=0), axis=2)
+    hm = np.sum(result.numpy().squeeze(axis=0), axis=2)
 
     plt.subplot(323)
     plt.imshow(hm)
@@ -97,7 +114,8 @@ def draw_result(img, idx, keypoint_coords, keypoint_coords_nooff, result, inf_ge
     plt.title('Predict')
 
     plt.subplot(326)
-    img, regr = inf_gen.__getitem__(11)
+    img, regr = inf_gen.__getitem__(seed)
+    img /= 255.
     gt_keypoints = regr[2][0]
     gt_keypoints[:, [0, 1]] = gt_keypoints[:, [1, 0]]
     draw_image = draw_skeleton_and_kepoints(gt_keypoints, img[idx])
