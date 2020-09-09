@@ -84,36 +84,24 @@ def draw_skeleton_and_kepoints(keypoint_coords, img):
 
 
 def draw_result(img, idx, keypoint_coords, keypoint_coords_nooff, result, inf_gen, seed):
-    plt.figure(figsize=(10, 14))
+    plt.figure(figsize=(10, 18))
 
-    plt.subplot(321)
+    plt.subplot(521)
     plt.imshow(img[idx])
     plt.scatter(keypoint_coords[:, 1], keypoint_coords[:, 0], c='red')
     plt.title('with offset')
 
-    plt.subplot(322)
+    plt.subplot(522)
     plt.imshow(img[idx])
     plt.scatter(keypoint_coords_nooff[:, 1], keypoint_coords_nooff[:, 0], c='blue')
     plt.title('No offset')
 
-    # hm = np.sum(result[0].numpy().squeeze(axis=0), axis=2)
-    hm = np.sum(result.numpy().squeeze(axis=0), axis=2)
-
-    plt.subplot(323)
-    plt.imshow(hm)
-    plt.title('Full heatmap')
-
-    plt.subplot(324)
-    plt.imshow(img[0])
-    plt.imshow(cv2.resize(hm, (256, 256)), alpha=0.7, cmap=plt.cm.gray)
-    plt.title('Heatmap with image')
-
-    plt.subplot(325)
+    plt.subplot(523)
     draw_image = draw_skeleton_and_kepoints(keypoint_coords, img[idx])
     plt.imshow(draw_image)
     plt.title('Predict')
 
-    plt.subplot(326)
+    plt.subplot(524)
     img, regr = inf_gen.__getitem__(seed)
     img /= 255.
     gt_keypoints = regr[2][0]
@@ -121,6 +109,44 @@ def draw_result(img, idx, keypoint_coords, keypoint_coords_nooff, result, inf_ge
     draw_image = draw_skeleton_and_kepoints(gt_keypoints, img[idx])
     plt.imshow(draw_image)
     plt.title('Ground Truth')
+    
+    # hm = np.sum(result[0].numpy().squeeze(axis=0), axis=2)
+    hm = np.sum(result.numpy().squeeze(axis=0), axis=2)
+
+    plt.subplot(525)
+    plt.imshow(hm)
+    plt.title('Full heatmap')
+
+    plt.subplot(526)
+    img, regr = inf_gen.__getitem__(seed)
+    img /= 255.
+    plt.imshow(img[0])
+    plt.imshow(cv2.resize(hm, (256, 256)), alpha=0.7, cmap=plt.cm.gray)
+    plt.title('Heatmap with image')
+
+    plt.subplot(527)
+    hm_ = hm/8.
+    hm_[hm_ >= 0.4] = 1
+    hm_[hm_ < 0.4] = 0
+    plt.imshow(hm_)
+    plt.title('Image Segmentation')
+
+    plt.subplot(528)
+    img, regr = inf_gen.__getitem__(seed)
+    img /= 255.
+    plt.imshow(img[0])
+    plt.imshow(cv2.resize(hm_, (256, 256)), alpha=0.5)
+    plt.title('Segmetation with image')
+
+    hm_idx = np.where(hm_ == 1)
+    max_x_idx, min_x_idx = max(hm_idx[0][1:-1]), min(hm_idx[0][1:-1])
+    max_y_idx, min_y_idx = max(hm_idx[1][1:-1]), min(hm_idx[1][1:-1])
+    plt.subplot(529)
+    img, regr = inf_gen.__getitem__(seed)
+    img /= 255.
+    cv2.rectangle(img[0], (min_y_idx, min_x_idx), (max_y_idx, max_x_idx), color=(255,0,0), thickness=2)
+    plt.imshow(img[0])
+    plt.title('BBox with image')
 
     plt.show()
 
