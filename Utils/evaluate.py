@@ -22,5 +22,5 @@ def evaluate(inf_model, inf_gen):
         # _, _, keypoint_coords = decode_single_poses_nooff(result[0].numpy().squeeze(axis=0))
         # _, _, keypoint_coords = decode_single_poses_nooff(result[0].numpy().squeeze(axis=0),
         #                                             result[1].numpy().squeeze(axis=0))
-        acc += pckh_05(regr[2], keypoint_coords)
+        acc += pckh_05(regr[2][0], keypoint_coords)
     print(f'Total accuracy : {acc / len(inf_gen)}')
