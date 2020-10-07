@@ -1,14 +1,19 @@
 import tensorflow as tf
 import tensorflow_addons as tfa
 
-learning_rate = 1e-4
+learning_rate = 5e-5
+
+def trianfle_fn(x):
+    return 1. / (2.**(x - 1))
+
 lr_schedule = tfa.optimizers.CyclicalLearningRate(
-            initial_learning_rate=1e-4,
-            maximal_learning_rate=1e-2,
-            step_size=2000,
-            scale_fn=lambda x: 1.,
+            initial_learning_rate=5e-5,
+            maximal_learning_rate=2e-3,
+            step_size=20,
+            scale_fn=trianfle_fn,
             scale_mode="cycle",
             name="MyCyclicScheduler")
+
 # optimizer = tf.keras.optimizers.Adam(learning_rate)
 # optimizer = tf.keras.optimizers.RMSprop(learning_rate)
 optimizer = tf.keras.optimizers.SGD(learning_rate=lr_schedule)
@@ -17,9 +22,9 @@ batch_size = 8
 mode = 'mobilenet_v1'
 EPOCHS = 100
 
-alpha = .90
+alpha = .25
 gamma = 2
-# loss_weight = [1000, 1]
-loss_weight = 1000
+loss_weight = [1000, 1]
+# loss_weight = 1000
 
-ckpt_path = '20200901_EfficientPose-focal_alpha-90'
+ckpt_path = '20201005_EverySports-K_verification_alpha-25'
