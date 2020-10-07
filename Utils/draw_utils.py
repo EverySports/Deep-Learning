@@ -13,16 +13,16 @@ def draw_heatmap(batch, heatmap_result, offset_result=None, displacement_fwd_res
         plt.title(idx)
 
     ### Offset
-    # for idx in range(17):
-    #     plt.subplot(12, 5, idx + 1 + 20)
-    #     plt.imshow(offset_result[batch][:, :, idx])
-    #     plt.colorbar()
-    #     plt.title(idx)
-    #     plt.subplot(12, 5, idx + 18 + 20)
-    #     plt.imshow(offset_result[batch][:, :, 17 + idx])
-    #     plt.colorbar()
-    #     plt.title(17 + idx)
-        # plt.show()
+    for idx in range(17):
+        plt.subplot(12, 5, idx + 1 + 20)
+        plt.imshow(offset_result[batch][:, :, idx])
+        plt.colorbar()
+        plt.title(idx)
+        plt.subplot(12, 5, idx + 18 + 20)
+        plt.imshow(offset_result[batch][:, :, 17 + idx])
+        plt.colorbar()
+        plt.title(17 + idx)
+    plt.show()
 
 
 def get_adjacent(keypoint_coords):
