@@ -54,7 +54,7 @@ class MobileNetV1(tf.keras.Model):
             weights='imagenet',
             classifier_activation=None,
         )
-        # self.features.trainable = False
+        self.features.trainable = False
         self.conv1 = Conv2D(1024, 1, padding='same')
         self.dconv1 = Conv2DTranspose(1024, 3, strides=2, padding='same')
         self.bn1 = BatchNormalization()
@@ -72,8 +72,6 @@ class MobileNetV1(tf.keras.Model):
         self.offset_conv1 = Conv2D(512, 3, 1, padding='same')
         self.offset_conv2 = Conv2D(256, 3, 1, padding='same')
         self.offset = Conv2D(34, 3, 1 , padding='same')
-        # self.displacement_fwd = Conv2D(32, 1, 1, padding='same')
-        # self.displacement_bwd = Conv2D(32, 1, 1, padding='same')
 
     def call(self, x):
         x = self.features(x)
@@ -107,9 +105,7 @@ class MobileNetV1(tf.keras.Model):
         offset = self.offset_conv2(offset)
         # offset = tf.nn.relu(offset)
         offset = self.offset(offset)
-        # displacement_fwd = self.displacement_fwd(x)
-        # displacement_bwd = self.displacement_bwd(x)
-        # return heatmap, offset, displacement_fwd, displacement_bwd
+
         return heatmap, offset
 
 if __name__ == '__main__':
