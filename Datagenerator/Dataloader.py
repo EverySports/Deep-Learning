@@ -2,9 +2,9 @@ import pandas as pd
 import numpy as np
 
 def load_data():
-    TRAIN_ROOT_PATH = f'../../Datasets/mpii_human_pose_v1'
+    TRAIN_ROOT_PATH = f'../../Datasets/MPII'
     pd.set_option('display.max_columns', None)
-    df_ = pd.read_csv(TRAIN_ROOT_PATH + f'/mpii_human_pose_v1_u12_2/mpii_dataset.csv')
+    df_ = pd.read_csv(TRAIN_ROOT_PATH + f'/annotation/mpii_dataset.csv')
     df_ = df_.iloc[:, 1:-3]
 
     df_ = df_.iloc[:, [0, 13, 14, 5, 6, 3, 4, 1, 2, 7, 8, 9, 10, 11, 12,

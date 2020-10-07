@@ -7,7 +7,7 @@ def normalize_image(image):
     return ((np.float32(image) / 255.) - mean) / std
 
 
-def heatmap(keypoints, input_size, output_width=256, output_height=256, sigma=10):
+def heatmap(keypoints, input_size, output_width=32, output_height=32, sigma=1):
     heatmap_result = np.zeros((output_width, output_height, 17))
     offset_result = np.zeros((output_width, output_height, 34))
     displacement_fwd_result = np.zeros((output_width, output_height, 32))
@@ -60,8 +60,8 @@ def heatmap(keypoints, input_size, output_width=256, output_height=256, sigma=10
 
         heatmap_result[:, :, idx] = np.maximum(heatmap_result[:, :, idx], heatmap[:, :, 0])
 
-        # offset_x, offset_y = get_offset(keypoint[0], keypoint[1], x_radius, y_radius)
-        # offset_result[:, :, idx] = offset_x
-        # offset_result[:, :, 17 + idx] = offset_y
+        offset_x, offset_y = get_offset(keypoint[0], keypoint[1], x_radius, y_radius)
+        offset_result[:, :, idx] = offset_x
+        offset_result[:, :, 17 + idx] = offset_y
 
     return heatmap_result, offset_result, displacement_fwd_result, displacement_bwd_result
